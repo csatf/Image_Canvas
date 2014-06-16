@@ -37,7 +37,7 @@ require_once 'Image/Canvas/Color.php';
 
 /**
  * SVG Canvas class.
- * 
+ *
  * @category  Images
  * @package   Image_Canvas
  * @author    Jesper Veggerby <pear.nosey@veggerby.dk>
@@ -84,13 +84,13 @@ class Image_Canvas_SVG extends Image_Canvas
      * @access private
      */
     var $_groupIDs = array();
-    
+
     /**
      * The XML encoding (default iso-8859-1)
      * @var string
      * @access private
      */
-    var $_encoding = 'iso-8859-1';   
+    var $_encoding = 'iso-8859-1';
 
     /**
      * Create the SVG canvas.
@@ -129,12 +129,12 @@ class Image_Canvas_SVG extends Image_Canvas
     function _addElement($element, $params = array())
     {
         $elementdata = $this->_indent . $element . "\n";
-        
+
         if (isset($params['url'])) {
             $url = $params['url'];
             $target = (isset($params['target']) ? $params['target'] : false);
             $alt = (isset($params['alt']) ? $params['alt'] : false);
-            
+
             $tags = '';
             if (isset($params['htmltags'])) {
                 foreach ($params['htmltags'] as $key => $value) {
@@ -146,13 +146,13 @@ class Image_Canvas_SVG extends Image_Canvas
                     }
                 }
             }
-            
+
             $elementdata = $this->_indent . '<a xlink:href="' . $url . '"' . ($target ? ' target="' . $target . '"' : '') . '>' . "\n" .
                 '    ' . $elementdata .
-                $this->_indent . '</a>' . "\n";                           
+                $this->_indent . '</a>' . "\n";
         }
-       
-        
+
+
         $this->_elements .= $elementdata;
     }
 
@@ -530,11 +530,11 @@ class Image_Canvas_SVG extends Image_Canvas
             } elseif (!$spline) {
                 $points .= ' L';
             }
-            
+
             if (($spline) && ($lastpoint !== false)) {
                 $points .= ' ' .round($lastpoint['P1X']) . ',' . round($lastpoint['P1Y']) . ' ' .
                            round($lastpoint['P2X']) . ',' . round($lastpoint['P2Y']);
-            } 
+            }
 
             $points .= ' ' . round($point['X']) . ',' . round($point['Y']);
 
@@ -591,7 +591,7 @@ class Image_Canvas_SVG extends Image_Canvas
         $lineColor = (isset($params['line']) ? $params['line'] : false);
 
         $attrs = (isset($params['attrs']) && is_array($params['attrs'])) ? $this->_getAttributes($params['attrs']) : null;
-        
+
         $style = $this->_getLineStyle($lineColor) . $this->_getFillStyle($fillColor);
         if ($style != '') {
             $this->_addElement(
@@ -769,22 +769,22 @@ class Image_Canvas_SVG extends Image_Canvas
         $alignment = (isset($params['alignment']) ? $params['alignment'] : false);
 
         $attrs = (isset($params['attrs']) && is_array($params['attrs'])) ? $this->_getAttributes($params['attrs']) : null;
-        
+
         $lines = explode("\n", $text);
         $textHeight = $this->textHeight($lines[0]);
 
         if (!is_array($alignment)) {
             $alignment = array('vertical' => 'top', 'horizontal' => 'left');
         }
-        
+
         if (!isset($alignment['vertical'])) {
             $alignment['vertical'] = 'top';
         }
-        
+
         if (!isset($alignment['horizontal'])) {
             $alignment['horizontal'] = 'left';
         }
-        
+
         $align = '';
 
         if ((isset($this->_font['vertical'])) && ($this->_font['vertical'])) {
@@ -834,11 +834,11 @@ class Image_Canvas_SVG extends Image_Canvas
             $textColor . ($textOpacity ? ';fill-opacity:' .
             $textOpacity :
             ''
-            ) . ';' . $align . '"' . 
+            ) . ';' . $align . '"' .
             ($attrs ? ' ' . $attrs : '') .
             '>' .
             ('<tspan x="0" dy="0em">'. implode('</tspan><tspan x="0" dy="1em">', explode("\n",htmlspecialchars($text))).'</tspan>') .
-            '</text>' . "\n" . 
+            '</text>' . "\n" .
             $this->_indent . '</g>',
             $params
         );
@@ -867,8 +867,8 @@ class Image_Canvas_SVG extends Image_Canvas
         $filename = $params['filename'];
 
         $attrs = (isset($params['attrs']) && is_array($params['attrs'])) ? $this->_getAttributes($params['attrs']) : null;
-        
-        list($width, $height, $type, $attr) = getimagesize($filename);        
+
+        list($width, $height, $type, $attr) = getimagesize($filename);
         $width = (isset($params['width']) ? $params['width'] : $width);
         $height = (isset($params['height']) ? $params['height'] : $height);
         $alignment = (isset($params['alignment']) ? $params['alignment'] : false);
@@ -876,9 +876,9 @@ class Image_Canvas_SVG extends Image_Canvas
         $file = fopen($filename, 'rb');
         $filedata = fread($file, filesize($filename));
         fclose($file);
-                
+
         $data = 'data:' . image_type_to_mime_type($type) . ';base64,' . base64_encode($filedata);
-            
+
         $this->_addElement(
             '<image xlink:href="' . $data . '" x="' . $x . '" y="' . $y . '"' .
             ($width ? ' width="' . $width . '"' : '') .
@@ -892,7 +892,7 @@ class Image_Canvas_SVG extends Image_Canvas
 
     /**
      * Start a group.
-     * 
+     *
      * What this does, depends on the canvas/format.
      *
      * @param string $name The name of the group
@@ -908,12 +908,12 @@ class Image_Canvas_SVG extends Image_Canvas
         }
         $this->_groupIDs[] = $name;
         $this->_addElement('<g id="' . htmlspecialchars($name) . '">');
-        $this->_indent .= '    ';        
+        $this->_indent .= '    ';
     }
 
     /**
      * End the "current" group.
-     * 
+     *
      * What this does, depends on the canvas/format.
      *
      * @return void
@@ -934,9 +934,9 @@ class Image_Canvas_SVG extends Image_Canvas
     function show($param = false)
     {
         parent::show($param);
-        
+
         $attrs = (isset($param['attrs']) && is_array($param['attrs'])) ? $this->_getAttributes($param['attrs']) : null;
-        
+
         $output = $this->getData($param);
 
         header('Content-Type: image/svg+xml');
@@ -956,13 +956,13 @@ class Image_Canvas_SVG extends Image_Canvas
         parent::save($param);
 
         $output = $this->getData($param);
-        
+
         $file = fopen($param['filename'], 'w+');
         fwrite($file, $output);
         fclose($file);
     }
-    
-    
+
+
     /**
      * Get SVG data
      *
@@ -990,12 +990,12 @@ class Image_Canvas_SVG extends Image_Canvas
             $this->_elements .
             '</svg>';
     }
- 
+
     /**
      * Set clipping to occur
-     * 
+     *
      * Parameter array:
-     * 
+     *
      * 'x0': int X point of Upper-left corner
      * 'y0': int X point of Upper-left corner
      * 'x1': int X point of lower-right corner
@@ -1005,7 +1005,7 @@ class Image_Canvas_SVG extends Image_Canvas
      *
      * @return void
      */
-    function setClipping($params = false) 
+    function setClipping($params = false)
     {
         if ($params === false) {
             $this->_addElement('</g>');
@@ -1013,26 +1013,26 @@ class Image_Canvas_SVG extends Image_Canvas
             $group = "clipping_" . $this->_id;
             $this->_id++;
             $this->_addElement('<g clip-path="url(#' . $group . ')">');
-            
+
             $this->_addDefine('<clipPath id="' . $group . '">');
             $this->_addDefine(
                 '    <path d="' .
-                'M' . $this->_getX($params['x0']) . ' ' . $this->_getY($params['y0']) . 
-                ' H' . $this->_getX($params['x1']) . 
-                ' V' . $this->_getY($params['y1']) . 
-                ' H' . $this->_getX($params['x0']) . 
+                'M' . $this->_getX($params['x0']) . ' ' . $this->_getY($params['y0']) .
+                ' H' . $this->_getX($params['x1']) .
+                ' V' . $this->_getY($params['y1']) .
+                ' H' . $this->_getX($params['x0']) .
                 ' Z"/>'
             );
-            $this->_addDefine('</clipPath>');            
+            $this->_addDefine('</clipPath>');
         }
     }
-    
+
     /**
      * Get a canvas specific HTML tag.
-     * 
-     * This method implicitly saves the canvas to the filename in the 
+     *
+     * This method implicitly saves the canvas to the filename in the
      * filesystem path specified and parses it as URL specified by URL path
-     * 
+     *
      * Parameter array:
      * 'filename': string
      * 'filepath': string Path to the file on the file system. Remember the final slash
@@ -1047,7 +1047,7 @@ class Image_Canvas_SVG extends Image_Canvas
     function toHtml($params)
     {
         parent::toHtml($params);
-        return '<embed src="' . $params['urlpath'] . $params['filename'] . '" width=' . $params['width'] . ' height=' . $params['height'] . ' type="image/svg+xml">';        
+        return '<embed src="' . $params['urlpath'] . $params['filename'] . '" width=' . $params['width'] . ' height=' . $params['height'] . ' type="image/svg+xml">';
     }
 
     /**
@@ -1058,13 +1058,13 @@ class Image_Canvas_SVG extends Image_Canvas
      * @return array
      */
     function _getAttributes($attrs)
-    {    
+    {
         $string = '';
-        
+
         foreach ($attrs as $key => $value) {
             $string .= ' ' . $key . '="' . $value . '"';
         }
-        
+
         return $string;
     }
 }
