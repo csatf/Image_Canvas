@@ -828,8 +828,8 @@ class Image_Canvas_SVG extends Image_Canvas
                     ''
                 ) .
             'style="' .
-            (isset($this->_font['name']) ?
-            'font-family:' . $this->_font['name'] . ';' : '') .
+            (isset($this->_font['name']) ? 'font-family:' . $this->_font['name'] . ';' : '') .
+            (isset($params['font-weight']) ? 'font-weight:' . $params['font-weight'] . ';' : '') .
             'font-size:' . $this->_font['size'] . 'px;fill:' .
             $textColor . ($textOpacity ? ';fill-opacity:' .
             $textOpacity :
@@ -985,9 +985,10 @@ class Image_Canvas_SVG extends Image_Canvas
         $attrs = (isset($param['attrs']) && is_array($param['attrs'])) ? $this->_getAttributes($param['attrs']) : null;
 
         $output = $this->getData($param);
-
-        header('Content-Type: image/svg+xml');
-        header('Content-Disposition: inline; filename = "' . basename($_SERVER['PHP_SELF'], '.php') . '.svg"');
+        if(!headers_sent()){
+            header('Content-Type: image/svg+xml');
+            header('Content-Disposition: inline; filename = "' . basename($_SERVER['PHP_SELF'], '.php') . '.svg"');
+        }
         print $output;
     }
 
