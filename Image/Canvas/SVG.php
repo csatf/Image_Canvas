@@ -890,6 +890,53 @@ class Image_Canvas_SVG extends Image_Canvas
         parent::image($params);
     }
 
+   /**
+     * Overlay image string
+     *
+     * Parameter array:
+     * 'x': int X-point of overlayed image
+     * 'y': int Y-point of overlayed image
+     * 'data': string The base64 encoded image.
+     * 'width': int [optional] The width of the overlayed image (resizing if possible)
+     * 'height': int [optional] The height of the overlayed image (resizing if possible)
+     * 'alignment': array [optional] Alignment
+     *
+     * @param array $params Parameter array
+     *
+     * @return void
+     */
+    function imageString($params)
+    {
+        $x = $this->_getX($params['x']);
+        $y = $this->_getY($params['y']);
+
+        $attrs = (isset($params['attrs']) && is_array($params['attrs'])) ? $this->_getAttributes($params['attrs']) : null;
+
+        $uri = 'data://application/octet-stream;base64,' . $params['data'];
+
+        list($width, $height, $type, $attr) = getimagesize($uri);
+
+        $width = (isset($params['width']) ? $params['width'] : $width);
+        $height = (isset($params['height']) ? $params['height'] : $height);
+        $alignment = (isset($params['alignment']) ? $params['alignment'] : false);
+
+        if($params['type'] == 'svg'){
+            $data = 'data:image/svg+xml;base64,' . $params['data'];
+        }else{
+            $data = 'data:' . image_type_to_mime_type($type) . ';base64,' . $params['data'];
+        }
+
+        $this->_addElement(
+            '<image xlink:href="' . $data . '" x="' . $x . '" y="' . $y . '"' .
+            ($width ? ' width="' . $width . '"' : '') .
+            ($height ? ' height="' . $height . '"' : '') .
+            ($attrs ? ' ' . $attrs : '') .
+            ' preserveAspectRatio="none"/>',
+            $params
+        );
+        parent::image($params);
+    }
+
     /**
      * Start a group.
      *
