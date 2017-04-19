@@ -55,42 +55,42 @@ class Image_Canvas_SVG extends Image_Canvas
      * @var string
      * @access private
      */
-    var $_elements = '';
+    public $_elements = '';
 
     /**
      * The SVG defines
      * @var string
      * @access private
      */
-    var $_defs = '';
+    public $_defs = '';
 
     /**
      * The current indention level
      * @var string
      * @access private
      */
-    var $_indent = '    ';
+    public $_indent = '    ';
 
     /**
      * A unieuq id counter
      * @var int
      * @access private
      */
-    var $_id = 1;
+    public $_id = 1;
 
     /**
      * The current group ids
      * @var array
      * @access private
      */
-    var $_groupIDs = array();
+    public $_groupIDs = array();
 
     /**
      * The XML encoding (default iso-8859-1)
      * @var string
      * @access private
      */
-    var $_encoding = 'iso-8859-1';
+    public $_encoding = 'iso-8859-1';
 
     /**
      * Create the SVG canvas.
@@ -107,7 +107,7 @@ class Image_Canvas_SVG extends Image_Canvas
      *
      * @return void
      */
-    function Image_Canvas_SVG($params)
+    public function Image_Canvas_SVG($params)
     {
         parent::Image_Canvas($params);
         $this->_reset();
@@ -126,7 +126,7 @@ class Image_Canvas_SVG extends Image_Canvas
      * @return void
      * @access private
      */
-    function _addElement($element, $params = array())
+    public function _addElement($element, $params = array())
     {
         $elementdata = $this->_indent . $element . "\n";
 
@@ -152,7 +152,6 @@ class Image_Canvas_SVG extends Image_Canvas
                 $this->_indent . '</a>' . "\n";
         }
 
-
         $this->_elements .= $elementdata;
     }
 
@@ -164,7 +163,7 @@ class Image_Canvas_SVG extends Image_Canvas
      * @return void
      * @access private
      */
-    function _addDefine($def)
+    public function _addDefine($def)
     {
         $this->_defs .= '        ' . $def . "\n";
     }
@@ -177,12 +176,13 @@ class Image_Canvas_SVG extends Image_Canvas
      * @return int A SVG compatible color
      * @access private
      */
-    function _color($color = false)
+    public function _color($color = false)
     {
         if ($color === false) {
             return 'transparent';
         } else {
             $color = Image_Canvas_Color::color2RGB($color);
+
             return 'rgb(' . $color[0] . ',' . $color[1] . ',' . $color[2] . ')';
         }
     }
@@ -195,7 +195,7 @@ class Image_Canvas_SVG extends Image_Canvas
      * @return int A SVG compatible opacity value
      * @access private
      */
-    function _opacity($color = false)
+    public function _opacity($color = false)
     {
         if ($color === false) {
             return false;
@@ -213,12 +213,12 @@ class Image_Canvas_SVG extends Image_Canvas
      * Get the SVG applicable linestyle
      *
      * @param mixed $lineStyle The line style to return, false if the one
-     *   explicitly set
+     *                         explicitly set
      *
      * @return mixed A SVG compatible linestyle
      * @access private
      */
-    function _getLineStyle($lineStyle = false)
+    public function _getLineStyle($lineStyle = false)
     {
         $result = '';
         if ($lineStyle === false) {
@@ -235,6 +235,7 @@ class Image_Canvas_SVG extends Image_Canvas
                     $result .= 'stroke-opacity:' . $opacity . ';';
                 }
             }
+
             return $result;
         }
 
@@ -249,6 +250,7 @@ class Image_Canvas_SVG extends Image_Canvas
                 }
                 $result .= 'stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:1;stroke-dasharray:1,4;stroke-dashoffset:1;';
             }
+
             return $result;
         }
 
@@ -262,6 +264,7 @@ class Image_Canvas_SVG extends Image_Canvas
                 }
                 $result .= 'stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:1;stroke-dasharray:4,4;stroke-dashoffset:1;';
             }
+
             return $result;
         }
 
@@ -272,12 +275,12 @@ class Image_Canvas_SVG extends Image_Canvas
      * Get the SVG applicable fillstyle
      *
      * @param mixed $fillStyle The fillstyle to return, false if the one
-     *   explicitly set
+     *                         explicitly set
      *
      * @return mixed A SVG compatible fillstyle
      * @access private
      */
-    function _getFillStyle($fillStyle = false)
+    public function _getFillStyle($fillStyle = false)
     {
         $result = '';
         if ($fillStyle === false) {
@@ -293,43 +296,43 @@ class Image_Canvas_SVG extends Image_Canvas
                 $endOpacity = $this->_opacity($fillStyle['end']);
 
                 switch ($fillStyle['direction']) {
-                case 'horizontal':
-                case 'horizontal_mirror':
-                    $x1 = '0%';
-                    $y1 = '0%';
-                    $x2 = '100%';
-                    $y2 = '0%';
-                    break;
+                    case 'horizontal':
+                    case 'horizontal_mirror':
+                        $x1 = '0%';
+                        $y1 = '0%';
+                        $x2 = '100%';
+                        $y2 = '0%';
+                        break;
 
-                case 'vertical':
-                case 'vertical_mirror':
-                    $x1 = '0%';
-                    $y1 = '100%';
-                    $x2 = '0%';
-                    $y2 = '0%';
-                    break;
+                    case 'vertical':
+                    case 'vertical_mirror':
+                        $x1 = '0%';
+                        $y1 = '100%';
+                        $x2 = '0%';
+                        $y2 = '0%';
+                        break;
 
-                case 'diagonal_tl_br':
-                    $x1 = '0%';
-                    $y1 = '0%';
-                    $x2 = '100%';
-                    $y2 = '100%';
-                    break;
+                    case 'diagonal_tl_br':
+                        $x1 = '0%';
+                        $y1 = '0%';
+                        $x2 = '100%';
+                        $y2 = '100%';
+                        break;
 
-                case 'diagonal_bl_tr':
-                    $x1 = '0%';
-                    $y1 = '100%';
-                    $x2 = '100%';
-                    $y2 = '0%';
-                    break;
+                    case 'diagonal_bl_tr':
+                        $x1 = '0%';
+                        $y1 = '100%';
+                        $x2 = '100%';
+                        $y2 = '0%';
+                        break;
 
-                case 'radial':
-                    $cx = '50%';
-                    $cy = '50%';
-                    $r = '100%';
-                    $fx = '50%';
-                    $fy = '50%';
-                    break;
+                    case 'radial':
+                        $cx = '50%';
+                        $cy = '50%';
+                        $r = '100%';
+                        $fx = '50%';
+                        $fy = '50%';
+                        break;
 
                 }
 
@@ -342,12 +345,12 @@ class Image_Canvas_SVG extends Image_Canvas
                     $this->_addDefine(
                         '    <stop offset="0%" style="stop-color:' .
                         $startColor. ';' . ($startOpacity ? 'stop-opacity:' .
-                        $startOpacity . ';' : ''). '"/>'
+                            $startOpacity . ';' : ''). '"/>'
                     );
                     $this->_addDefine(
                         '    <stop offset="100%" style="stop-color:' .
                         $endColor. ';' . ($endOpacity ? 'stop-opacity:' .
-                        $endOpacity . ';' : ''). '"/>'
+                            $endOpacity . ';' : ''). '"/>'
                     );
                     $this->_addDefine(
                         '</radialGradient>'
@@ -363,17 +366,17 @@ class Image_Canvas_SVG extends Image_Canvas
                     $this->_addDefine(
                         '    <stop offset="0%" style="stop-color:' .
                         $startColor. ';' . ($startOpacity ? 'stop-opacity:' .
-                        $startOpacity . ';' : ''). '"/>'
+                            $startOpacity . ';' : ''). '"/>'
                     );
                     $this->_addDefine(
                         '    <stop offset="50%" style="stop-color:' .
                         $endColor. ';' . ($endOpacity ? 'stop-opacity:' .
-                        $endOpacity . ';' : ''). '"/>'
+                            $endOpacity . ';' : ''). '"/>'
                     );
                     $this->_addDefine(
                         '    <stop offset="100%" style="stop-color:' .
                         $startColor. ';' . ($startOpacity ? 'stop-opacity:' .
-                        $startOpacity . ';' : ''). '"/>'
+                            $startOpacity . ';' : ''). '"/>'
                     );
                     $this->_addDefine(
                         '</linearGradient>'
@@ -387,12 +390,12 @@ class Image_Canvas_SVG extends Image_Canvas
                     $this->_addDefine(
                         '    <stop offset="0%" style="stop-color:' .
                         $startColor. ';' . ($startOpacity ? 'stop-opacity:' .
-                        $startOpacity . ';' : ''). '"/>'
+                            $startOpacity . ';' : ''). '"/>'
                     );
                     $this->_addDefine(
                         '    <stop offset="100%" style="stop-color:' .
                         $endColor. ';' . ($endOpacity ? 'stop-opacity:' .
-                        $endOpacity . ';' : ''). '"/>'
+                            $endOpacity . ';' : ''). '"/>'
                     );
                     $this->_addDefine(
                         '</linearGradient>'
@@ -406,6 +409,7 @@ class Image_Canvas_SVG extends Image_Canvas
             if ($opacity = $this->_opacity($fillStyle)) {
                 $result .= 'fill-opacity:' . $opacity . ';';
             }
+
             return $result;
         } else {
             return 'fill:none;';
@@ -419,7 +423,7 @@ class Image_Canvas_SVG extends Image_Canvas
      *
      * @return void
      */
-    function setFillImage($filename)
+    public function setFillImage($filename)
     {
     }
 
@@ -430,7 +434,7 @@ class Image_Canvas_SVG extends Image_Canvas
      *
      * @return void
      */
-    function setGradientFill($gradient)
+    public function setGradientFill($gradient)
     {
         $this->_fillStyle = $gradient;
         $this->_fillStyle['type'] = 'gradient';
@@ -450,7 +454,7 @@ class Image_Canvas_SVG extends Image_Canvas
      *
      * @return void
      */
-    function setFont($fontOptions)
+    public function setFont($fontOptions)
     {
         parent::setFont($fontOptions);
         if (!isset($this->_font['size'])) {
@@ -470,7 +474,7 @@ class Image_Canvas_SVG extends Image_Canvas
      *
      * @return void
      */
-    function line($params)
+    public function line($params)
     {
         $x0 = $this->_getX($params['x0']);
         $y0 = $this->_getY($params['y0']);
@@ -508,7 +512,7 @@ class Image_Canvas_SVG extends Image_Canvas
      *
      * @return void
      */
-    function polygon($params = array())
+    public function polygon($params = array())
     {
         $connectEnds = (isset($params['connect']) ? $params['connect'] : false);
         $fillColor = (isset($params['fill']) ? $params['fill'] : false);
@@ -533,7 +537,7 @@ class Image_Canvas_SVG extends Image_Canvas
 
             if (($spline) && ($lastpoint !== false)) {
                 $points .= ' ' .round($lastpoint['P1X']) . ',' . round($lastpoint['P1Y']) . ' ' .
-                           round($lastpoint['P2X']) . ',' . round($lastpoint['P2Y']);
+                    round($lastpoint['P2X']) . ',' . round($lastpoint['P2Y']);
             }
 
             $points .= ' ' . round($point['X']) . ',' . round($point['Y']);
@@ -581,7 +585,7 @@ class Image_Canvas_SVG extends Image_Canvas
      *
      * @return void
      */
-    function rectangle($params)
+    public function rectangle($params)
     {
         $x0 = min($this->_getX($params['x0']), $this->_getX($params['x1']));
         $y0 = min($this->_getY($params['y0']), $this->_getY($params['y1']));
@@ -624,7 +628,7 @@ class Image_Canvas_SVG extends Image_Canvas
      *
      * @return void
      */
-    function ellipse($params)
+    public function ellipse($params)
     {
         $x = $this->_getX($params['x']);
         $y = $this->_getY($params['y']);
@@ -671,7 +675,7 @@ class Image_Canvas_SVG extends Image_Canvas
      *
      * @return void
      */
-    function pieslice($params)
+    public function pieslice($params)
     {
         $x = $this->_getX($params['x']);
         $y = $this->_getY($params['y']);
@@ -721,7 +725,7 @@ class Image_Canvas_SVG extends Image_Canvas
      *
      * @return int The width of the text
      */
-    function textWidth($text)
+    public function textWidth($text)
     {
         if ((isset($this->_font['vertical'])) && ($this->_font['vertical'])) {
             return $this->_font['size'] * count(explode("\n",$text));
@@ -737,7 +741,7 @@ class Image_Canvas_SVG extends Image_Canvas
      *
      * @return int The height of the text
      */
-    function textHeight($text)
+    public function textHeight($text)
     {
         if ((isset($this->_font['vertical'])) && ($this->_font['vertical'])) {
             return round($this->_font['size'] * 0.7 * strlen($text));
@@ -760,7 +764,7 @@ class Image_Canvas_SVG extends Image_Canvas
      *
      * @return void
      */
-    function addText($params)
+    public function addText($params)
     {
         $x = $this->_getX($params['x']);
         $y = $this->_getY($params['y']);
@@ -825,15 +829,17 @@ class Image_Canvas_SVG extends Image_Canvas
             'y="0" ' .
             (isset($this->_font['angle']) && ($this->_font['angle'] > 0) ?
                 'transform="rotate(' . (((-1) * $this->_font['angle']) % 360) . ')" ' :
-                    ''
-                ) .
+                ''
+            ) .
             'style="' .
             (isset($this->_font['name']) ? 'font-family:' . $this->_font['name'] . ';' : '') .
             (isset($params['font-weight']) ? 'font-weight:' . $params['font-weight'] . ';' : '') .
+            (isset($params['text-decoration']) ? 'text-decoration:' . $params['text-decoration'] . ';' : '') .
+            (isset($params['letter-spacing']) ? 'letter-spacing:' . $params['letter-spacing'] . ';' : '') .
             'font-size:' . $this->_font['size'] . 'px;fill:' .
             $textColor . ($textOpacity ? ';fill-opacity:' .
-            $textOpacity :
-            ''
+                $textOpacity :
+                ''
             ) . ';' . $align . '"' .
             ($attrs ? ' ' . $attrs : '') .
             '>' .
@@ -860,7 +866,7 @@ class Image_Canvas_SVG extends Image_Canvas
      *
      * @return void
      */
-    function image($params)
+    public function image($params)
     {
         $x = $this->_getX($params['x']);
         $y = $this->_getY($params['y']);
@@ -890,7 +896,7 @@ class Image_Canvas_SVG extends Image_Canvas
         parent::image($params);
     }
 
-   /**
+    /**
      * Overlay image string
      *
      * Parameter array:
@@ -905,7 +911,7 @@ class Image_Canvas_SVG extends Image_Canvas
      *
      * @return void
      */
-    function imageString($params)
+    public function imageString($params)
     {
         $x = $this->_getX($params['x']);
         $y = $this->_getY($params['y']);
@@ -920,9 +926,9 @@ class Image_Canvas_SVG extends Image_Canvas
         $height = (isset($params['height']) ? $params['height'] : $height);
         $alignment = (isset($params['alignment']) ? $params['alignment'] : false);
 
-        if($params['type'] == 'svg'){
+        if ($params['type'] == 'svg') {
             $data = 'data:image/svg+xml;base64,' . $params['data'];
-        }else{
+        } else {
             $data = 'data:' . image_type_to_mime_type($type) . ';base64,' . $params['data'];
         }
 
@@ -937,6 +943,21 @@ class Image_Canvas_SVG extends Image_Canvas
         parent::image($params);
     }
 
+
+    /**
+     * Embeds another SVG image into the image
+     * @param string $svg The svg image (unencoded text string)
+     * @param array $params Positioning and scaling parameters
+     */
+    public function svg($svg, $params)
+    {
+        //then wrap the svg in a group to position the element
+        $svg = '<g transform="translate('. $params['translate'].')scale(' . $params['scale'] . ')">' .  $svg . '</g>';
+
+        $this->_addElement($svg);
+        parent::image(FALSE);
+    }
+
     /**
      * Start a group.
      *
@@ -946,7 +967,7 @@ class Image_Canvas_SVG extends Image_Canvas
      *
      * @return void
      */
-    function startGroup($name = false)
+    public function startGroup($name = false)
     {
         $name = strtolower(str_replace(' ', '_', $name));
         if (in_array($name, $this->_groupIDs)) {
@@ -965,7 +986,7 @@ class Image_Canvas_SVG extends Image_Canvas
      *
      * @return void
      */
-    function endGroup()
+    public function endGroup()
     {
         $this->_indent = substr($this->_indent, 0, -4);
         $this->_addElement('</g>');
@@ -978,14 +999,14 @@ class Image_Canvas_SVG extends Image_Canvas
      *
      * @return void
      */
-    function show($param = false)
+    public function show($param = false)
     {
         parent::show($param);
 
         $attrs = (isset($param['attrs']) && is_array($param['attrs'])) ? $this->_getAttributes($param['attrs']) : null;
 
         $output = $this->getData($param);
-        if(!headers_sent()){
+        if (!headers_sent()) {
             header('Content-Type: image/svg+xml');
             header('Content-Disposition: inline; filename = "' . basename($_SERVER['PHP_SELF'], '.php') . '.svg"');
         }
@@ -999,17 +1020,21 @@ class Image_Canvas_SVG extends Image_Canvas
      *
      * @return void
      */
-    function save($param = false)
+    public function save($param = false)
     {
         parent::save($param);
 
         $output = $this->getData($param);
 
         $file = fopen($param['filename'], 'w+');
-        fwrite($file, $output);
-        fclose($file);
-    }
+        if($file){
+            fwrite($file, $output);
+            fclose($file);
+        }else{
+            throw new Exception('Could not save svg');
+        }
 
+    }
 
     /**
      * Get SVG data
@@ -1018,17 +1043,28 @@ class Image_Canvas_SVG extends Image_Canvas
      *
      * @return string
      */
-    function getData($param = false)
+    public function getData($param = false)
     {
         $attrs = (isset($param['attrs']) && is_array($param['attrs'])) ? $this->_getAttributes($param['attrs']) : null;
+
+        //if rotate is set
+        if (isset($param['rotate'])) {
+            //switch height and width
+            $width = $this->_width;
+            $this->_width = $this->_height;
+            $this->_height = $width;
+
+            //and wrap the body in rotated group
+            $this->_elements = '<g transform="rotate('.$param['rotate'].')">' .  $this->_elements . '</g>';
+        }
 
         return '<?xml version="1.0" encoding="'. $this->_encoding . '"?>' . "\n" .
             '<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.0//EN"' . "\n\t" .
             ' "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd">' . "\n" .
             '<svg width="' . $this->_width . '" height="' . $this->_height .
-                '" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"' .
-                ($attrs ? ' ' . $attrs : '') .
-                '>' . "\n" .
+            '" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"' .
+            ($attrs ? ' ' . $attrs : '') .
+            '>' . "\n" .
             ($this->_defs ?
                 '    <defs>' . "\n" .
                 $this->_defs .
@@ -1053,7 +1089,7 @@ class Image_Canvas_SVG extends Image_Canvas
      *
      * @return void
      */
-    function setClipping($params = false)
+    public function setClipping($params = false)
     {
         if ($params === false) {
             $this->_addElement('</g>');
@@ -1092,9 +1128,10 @@ class Image_Canvas_SVG extends Image_Canvas
      *
      * @return string HTML code
      */
-    function toHtml($params)
+    public function toHtml($params)
     {
         parent::toHtml($params);
+
         return '<embed src="' . $params['urlpath'] . $params['filename'] . '" width=' . $params['width'] . ' height=' . $params['height'] . ' type="image/svg+xml">';
     }
 
@@ -1105,7 +1142,7 @@ class Image_Canvas_SVG extends Image_Canvas
      *
      * @return array
      */
-    function _getAttributes($attrs)
+    public function _getAttributes($attrs)
     {
         $string = '';
 
@@ -1116,5 +1153,3 @@ class Image_Canvas_SVG extends Image_Canvas
         return $string;
     }
 }
-
-?>
