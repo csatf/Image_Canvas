@@ -60,7 +60,8 @@ class Image_Canvas_Color extends Image_Color
     */
     function allocateColor(&$img, $color)
     {
-        $color = Image_Canvas_Color::color2RGB($color);
+        $color = $this->color2RGB($color);
+        //$color = Image_Canvas_Color::color2RGB($color);
 
         if (($color[3] == 255) || (!function_exists("imagecolorallocatealpha"))) {
             return imagecolorallocate($img, $color[0], $color[1], $color[2]);
@@ -150,6 +151,7 @@ class Image_Canvas_Color extends Image_Color
     *   @return array Array of all the colors, one element for each color.
     *   @access public
     */
+    /*
     function getRange ($degrees)
     {
         $tempColors = parent::getRange($degrees);
@@ -168,6 +170,7 @@ class Image_Canvas_Color extends Image_Color
 
         return $tempColors;
     }
+    */
 
     /**
     * Internal method to correctly set the colors.
@@ -180,8 +183,10 @@ class Image_Canvas_Color extends Image_Color
     */
     function _setColors ( $col1, $col2 )
     {
-        $this->color1 = Image_Canvas_Color::color2RGB($col1);
-        $this->color2 = Image_Canvas_Color::color2RGB($col2);
+        $this->color1 = $this->color2RGB($col1);
+        $this->color2 = $this->color2RGB($col2);
+        //$this->color1 = Image_Canvas_Color::color2RGB($col1);
+        //$this->color2 = Image_Canvas_Color::color2RGB($col2);
     }
 }
 ?>

@@ -150,7 +150,7 @@ class Image_Canvas
      *
      * @abstract
      */
-    function Image_Canvas($params)
+    public function __construct($params)
     {
         if (isset($params['left'])) {
             $this->_left = $params['left'];
@@ -786,7 +786,7 @@ class Image_Canvas
      *         PEAR_Error on error
      * @static
      */
-    function &factory($canvas, $params)
+    public static function &factory($canvas, $params)
     {
         $canvas = strtoupper($canvas);
         
@@ -814,10 +814,20 @@ class Image_Canvas
             $canvas = 'ImageMap';
         }
 
-        $class = 'Image_Canvas_'. $canvas;
-        include_once 'Image/Canvas/'. str_replace('_', '/', $canvas) . '.php';
-        
-        $obj = new $class($params);
+        $obj = null;
+
+        if ($canvas == 'SVG') {
+            $obj = new Image_Canvas_SVG($params);
+
+        } else if ($canvas == 'PDF') {
+            $obj = new Image_Canvas_PDF($params);
+            
+        } else {
+            $class = 'Image_Canvas_'. $canvas;
+            include_once 'Image/Canvas/'. str_replace('_', '/', $canvas) . '.php';
+            
+            $obj = new $class($params);
+        }
         return $obj;
     }
 

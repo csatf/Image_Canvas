@@ -107,7 +107,7 @@ class Image_Canvas_SVG extends Image_Canvas
      *
      * @return void
      */
-    public function Image_Canvas_SVG($params)
+    public function __construct($params)
     {
         parent::Image_Canvas($params);
         $this->_reset();
@@ -181,7 +181,9 @@ class Image_Canvas_SVG extends Image_Canvas
         if ($color === false) {
             return 'transparent';
         } else {
-            $color = Image_Canvas_Color::color2RGB($color);
+            $image_canvas_color = new Image_Canvas_Color();
+            $color = $image_canvas_color->color2RGB($color);
+            //$color = Image_Canvas_Color::color2RGB($color);
 
             return 'rgb(' . $color[0] . ',' . $color[1] . ',' . $color[2] . ')';
         }
@@ -200,7 +202,9 @@ class Image_Canvas_SVG extends Image_Canvas
         if ($color === false) {
             return false;
         } else {
-            $color = Image_Canvas_Color::color2RGB($color);
+            $image_canvas_color = new Image_Canvas_Color();
+            $color = $image_canvas_color->color2RGB($color);
+            //$color = Image_Canvas_Color::color2RGB($color);
             if ($color[3] != 255) {
                 return sprintf('%0.1f', $color[3]/255);
             } else {
