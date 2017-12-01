@@ -109,7 +109,7 @@ class Image_Canvas_SVG extends Image_Canvas
      */
     public function __construct($params)
     {
-        parent::Image_Canvas($params);
+        parent::__construct($params);
         $this->_reset();
 
         if (isset($params['encoding'])) {
